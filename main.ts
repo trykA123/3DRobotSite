@@ -3,7 +3,7 @@ import { CameraHelper } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import soldierModel from "./models/Soldier.glb";
+import soldierModel from "./models/Soldier.glb?url";
 import ambientTexture from "./textures/ambient.jpg";
 import displacementTexture from "./textures/displacement.jpg";
 import nrm2 from "./textures/nrm2.jpg";
@@ -188,7 +188,7 @@ generateStars();
 
 //MODEL WITH ANIMATIONS GLB
 var characterControls: CharacterControls;
-new GLTFLoader().load("models/Soldier.glb", function (gltf) {
+new GLTFLoader().load(soldierModel, function (gltf) {
   const model = gltf.scene;
   model.traverse(function (object: any) {
     if (object.isMesh) object.castShadow = true;
