@@ -71,7 +71,7 @@ cube.position.x = 5;
 scene.add(cube);
 
 // Load the planet texture
-const planetTexture = new THREE.TextureLoader().load("/textures/moon.jpg");
+const planetTexture = new THREE.TextureLoader().load("../textures/moon.jpg");
 
 // Create a sphere geometry
 const planetRadius = 5;
@@ -255,10 +255,10 @@ window.addEventListener("resize", onWindowResize);
 function generateFloor() {
   // TEXTURES
   const textureLoader = new THREE.TextureLoader();
-  const sandBaseColor = textureLoader.load("/textures/rock2.jpg");
-  const sandNormalMap = textureLoader.load("/textures/nrm2.jpg");
-  const sandHeightMap = textureLoader.load("/texturessand/displacement.jpg");
-  const sandAmbientOcclusion = textureLoader.load("/textures/ambient.jpg");
+  const sandBaseColor = textureLoader.load("../textures/rock2.jpg");
+  const sandNormalMap = textureLoader.load("../textures/nrm2.jpg");
+  const sandHeightMap = textureLoader.load("../textures/displacement.jpg");
+  const sandAmbientOcclusion = textureLoader.load("../textures/ambient.jpg");
 
   const WIDTH = 300;
   const LENGTH = 300;
@@ -268,7 +268,7 @@ function generateFloor() {
     map: sandBaseColor,
     normalMap: sandNormalMap,
     displacementMap: sandHeightMap,
-    displacementScale: 1,
+    displacementScale: 0.1,
     aoMap: sandAmbientOcclusion,
   });
   wrapAndRepeatTexture(material.map);
