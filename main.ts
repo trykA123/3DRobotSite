@@ -3,6 +3,11 @@ import { CameraHelper } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import soldierModel from "./models/Soldier.glb";
+import ambientTexture from "./textures/ambient.jpg";
+import displacementTexture from "./textures/displacement.jpg";
+import nrm2 from "./textures/nrm2.jpg";
+import textureColor from "./textures/rock2.jpg";
 import { CharacterControls } from "./utils/controls";
 
 // SCENE
@@ -255,10 +260,10 @@ window.addEventListener("resize", onWindowResize);
 function generateFloor() {
   // TEXTURES
   const textureLoader = new THREE.TextureLoader();
-  const sandBaseColor = textureLoader.load("../textures/rock2.jpg");
-  const sandNormalMap = textureLoader.load("../textures/nrm2.jpg");
-  const sandHeightMap = textureLoader.load("../textures/displacement.jpg");
-  const sandAmbientOcclusion = textureLoader.load("../textures/ambient.jpg");
+  const sandBaseColor = textureLoader.load(textureColor);
+  const sandNormalMap = textureLoader.load(nrm2);
+  const sandHeightMap = textureLoader.load(displacementTexture);
+  const sandAmbientOcclusion = textureLoader.load(ambientTexture);
 
   const WIDTH = 300;
   const LENGTH = 300;
