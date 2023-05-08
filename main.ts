@@ -6,6 +6,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import soldierModel from "./models/Soldier.glb?url";
 import ambientTexture from "./textures/ambient.jpg";
 import displacementTexture from "./textures/displacement.jpg";
+import moon from "./textures/moon.jpg";
 import nrm2 from "./textures/nrm2.jpg";
 import textureColor from "./textures/rock2.jpg";
 import { CharacterControls } from "./utils/controls";
@@ -76,7 +77,7 @@ cube.position.x = 5;
 scene.add(cube);
 
 // Load the planet texture
-const planetTexture = new THREE.TextureLoader().load("../textures/moon.jpg");
+const planetTexture = new THREE.TextureLoader().load(moon);
 
 // Create a sphere geometry
 const planetRadius = 5;
