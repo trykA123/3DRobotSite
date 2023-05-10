@@ -3,7 +3,7 @@ import { CameraHelper } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import soldierModel from "./models/Soldier.glb?url";
+import robotModel from "./models/spacerobot1.glb?url";
 import ambientTexture from "./textures/ambient.jpg";
 import displacementTexture from "./textures/displacement.jpg";
 import moon from "./textures/moon.jpg";
@@ -189,7 +189,7 @@ generateStars();
 
 //MODEL WITH ANIMATIONS GLB
 var characterControls: CharacterControls;
-new GLTFLoader().load(soldierModel, function (gltf) {
+new GLTFLoader().load(robotModel, function (gltf) {
   const model = gltf.scene;
   model.traverse(function (object: any) {
     if (object.isMesh) object.castShadow = true;
@@ -274,7 +274,7 @@ function generateFloor() {
     map: sandBaseColor,
     normalMap: sandNormalMap,
     displacementMap: sandHeightMap,
-    displacementScale: 0.1,
+    displacementScale: 0.01,
     aoMap: sandAmbientOcclusion,
   });
   wrapAndRepeatTexture(material.map);
@@ -321,7 +321,7 @@ function generateStars() {
   });
 
   const starVertices = [];
-  const starCount = 5000;
+  const starCount = 9000;
 
   for (let i = 0; i < starCount; i++) {
     const x = THREE.MathUtils.randFloatSpread(2000);
@@ -337,4 +337,22 @@ function generateStars() {
 
   const stars = new THREE.Points(starGeometry, starMaterial);
   scene.add(stars);
+}
+
+const raycaster = new THREE.Raycaster();
+
+export function getTerrainHeightAt(x, z) {
+  raycaster.set(new THREE.Vector3(x, 1000, z), new THREE.Vector3(0, -1, 0));
+
+  const intersects = raycaster.intersectObject(
+    scene.children.find(
+      (child) =>
+        child.type === "Mesh" && child.geometry.type === "PlaneGeometry"
+    )
+  );
+  if (intersects.length > 0) {
+    return intersects[0].point.y;
+  }
+
+  return 0;
 }
