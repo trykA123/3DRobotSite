@@ -19,7 +19,7 @@ export function createMoon(scene: THREE.Scene) {
   const moon = new THREE.Mesh(moonGeometry, moonMaterial);
 
   // Position the planet at a suitable location in your scene
-  moon.position.set(-800, 100, -2200);
+  moon.position.set(-800, 300, -2200);
 
   // Add the planet mesh to the scene
   scene.add(moon);
@@ -39,7 +39,7 @@ export function createGambaCentauri(scene: THREE.Scene) {
   const gamba = new THREE.Mesh(gambaGeometry, gambaMaterial);
 
   // Position the planet at a suitable location in your scene
-  gamba.position.set(-700, 150, -2200);
+  gamba.position.set(-700, 350, -2200);
 
   // Add the planet mesh to the scene
   scene.add(gamba);
@@ -49,7 +49,7 @@ export function createSun(scene: THREE.Scene) {
   const sunTexture = new THREE.TextureLoader().load(sunColor);
 
   // Create a sphere geometry
-  const sunRadius = 90;
+  const sunRadius = 180;
   const sunGeometry = new THREE.SphereGeometry(sunRadius, 64, 64);
 
   // Create a material using the texture map
@@ -59,7 +59,7 @@ export function createSun(scene: THREE.Scene) {
   const sun = new THREE.Mesh(sunGeometry, sunMaterial);
 
   // Position the planet at a suitable location in your scene
-  sun.position.set(-2200, 400, 1800);
+  sun.position.set(-2200, 800, 1800);
 
   // Add the planet mesh to the scene
   scene.add(sun);

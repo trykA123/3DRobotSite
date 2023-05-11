@@ -8,9 +8,9 @@ import {
   createGambaCentauri,
   createMoon,
   createNeptune,
-  createSun
+  createSun,
 } from "./utils/planets";
-import { codedPlate, generateFloor, generateStars } from "./utils/utils";
+import { codedPlate, generateFloor, generateStars, light } from "./utils/utils";
 
 const manager = new THREE.LoadingManager(() => {
   const loadingScreen = document.getElementById("loading-screen");
@@ -24,10 +24,10 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x050505);
 
 codedPlate(scene);
-createMoon(scene);
 createGambaCentauri(scene);
+createMoon(scene);
 createNeptune(scene);
-createSun(scene)
+createSun(scene);
 
 // camera
 const camera = new THREE.PerspectiveCamera(
@@ -49,14 +49,14 @@ renderer.shadowMap.enabled = true;
 // CONTROLS
 const orbitControls = new OrbitControls(camera, renderer.domElement);
 orbitControls.enableDamping = true;
-orbitControls.minDistance = 5;
-orbitControls.maxDistance = 150;
+orbitControls.minDistance = 3;
+orbitControls.maxDistance = 15;
 orbitControls.enablePan = false;
-orbitControls.maxPolarAngle = Math.PI / 2 - 0.05;
+orbitControls.maxPolarAngle = Math.PI / 2 - 0.01;
 orbitControls.update();
 
 // LIGHTS
-light();
+light(scene);
 
 // FLOOR
 generateFloor(scene);
@@ -137,21 +137,3 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 window.addEventListener("resize", onWindowResize);
-
-function light() {
-  scene.add(new THREE.AmbientLight(0xffffff, 0.7));
-
-  const dirLight = new THREE.DirectionalLight(0xffffff, 1);
-  dirLight.position.set(-60, 100, -10);
-  dirLight.castShadow = true;
-  dirLight.shadow.camera.top = 50;
-  dirLight.shadow.camera.bottom = -50;
-  dirLight.shadow.camera.left = -50;
-  dirLight.shadow.camera.right = 50;
-  dirLight.shadow.camera.near = 0.1;
-  dirLight.shadow.camera.far = 200;
-  dirLight.shadow.mapSize.width = 4096;
-  dirLight.shadow.mapSize.height = 4096;
-  scene.add(dirLight);
-  //scene.add(new THREE.CameraHelper(dirLight.shadow.camera));
-}

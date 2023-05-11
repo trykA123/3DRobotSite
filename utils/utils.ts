@@ -67,7 +67,7 @@ export function generateStars(scene: THREE.Scene) {
 
   for (let i = 0; i < starCount; i++) {
     const x = THREE.MathUtils.randFloat(-range, range);
-    const y = Math.random() * (4000 - 200) + 200;
+    const y = Math.random() * (4000 - 150) + 150;
     const z = THREE.MathUtils.randFloat(-range, range);
 
     starVertices.push(x, y, z);
@@ -82,22 +82,21 @@ export function generateStars(scene: THREE.Scene) {
   scene.add(stars);
 }
 
-export function codedPlate(scene: THREE.Scene) {
+export function codedPlate(scene) {
   const box = new THREE.BoxGeometry(1, 1, 1);
 
   // Create a canvas and draw text
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
-  canvas.width = 256;
-  canvas.height = 256;
+  canvas.width = 512;
+  canvas.height = 512;
   ctx.fillStyle = "rgba(20, 47, 74, 0.06)";
-  //ctx.fillStyle = "green";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.font = "16px Arial";
+  ctx.font = "40px Arial";
   ctx.fillStyle = "white";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  //  159, 165, 171
+
   // Wrap text function
   function wrapText(context, text, x, y, maxWidth, lineHeight) {
     const words = text.split(" ");
@@ -120,26 +119,66 @@ export function codedPlate(scene: THREE.Scene) {
   }
 
   const longText =
-    "01000001 00100000 01101110 01100101 01110111 00100000 01110000 01100001 01110100 01101000";
+    "Even I had to spend like 10 minutes to find it.. and I did this stuff";
 
   wrapText(
     ctx,
     longText,
     canvas.width / 2,
     canvas.height / 3,
-    canvas.width - 20,
-    20
+    canvas.width - 40,
+    40
   );
 
   // Create a texture from the canvas
   const texture = new THREE.CanvasTexture(canvas);
 
   // Use the texture as the map for the cube material
-  const boxmaterial = new THREE.MeshBasicMaterial({ map: texture });
-  const cube = new THREE.Mesh(box, boxmaterial);
+  const boxMaterial = new THREE.MeshPhongMaterial({ map: texture }); // or MeshStandardMaterial
+  const cube = new THREE.Mesh(box, boxMaterial);
 
-  cube.position.set(200, -0.25, 100);
-  // correct one cube.position.set(200, -0.45, 100);
+  cube.position.set(100, -0.25, 50);
 
+  // Make the text cube selectable
+  cube.userData.selectable = true;
+
+  // Add the text cube to the scene
   scene.add(cube);
+
+  // Add an event listener for the mouse click event
+  document.addEventListener("mousedown", onMouseDown, false);
+
+  // Mouse down event handler
+  function onMouseDown(event) {
+    const mouse = new THREE.Vector2();
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(mouse, camera);
+
+    const intersects = raycaster.intersectObject(cube);
+
+    if (intersects.length > 0) {
+      console.log("Text cube selected!");
+      // Perform your desired action here
+    }
+  }
+}
+
+export function light(scene: THREE.Scene) {
+  scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+
+  const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+  dirLight.position.set(-60, 100, -10);
+  dirLight.castShadow = true;
+  dirLight.shadow.camera.top = 50;
+  dirLight.shadow.camera.bottom = -50;
+  dirLight.shadow.camera.left = -50;
+  dirLight.shadow.camera.right = 50;
+  dirLight.shadow.camera.near = 0.1;
+  dirLight.shadow.camera.far = 200;
+  dirLight.shadow.mapSize.width = 4096;
+  dirLight.shadow.mapSize.height = 4096;
+  scene.add(dirLight);
 }
