@@ -20,9 +20,9 @@ export class CharacterControls {
   cameraTarget = new THREE.Vector3();
 
   // constants
-  fadeDuration: number = 0.2;
-  runVelocity = 5;
-  walkVelocity = 2;
+  fadeDuration: number = 0.3;
+  runVelocity = 8;
+  walkVelocity = 4;
 
   constructor(
     model: THREE.Group,
