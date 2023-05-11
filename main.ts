@@ -1,15 +1,47 @@
 import * as THREE from "three";
-import { CameraHelper } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
+import { ColladaLoader } from "three/examples/jsm/loader/ColladaLoader;";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import robotModel from "./models/spacerobot1.glb?url";
-import ambientTexture from "./textures/ambient.jpg";
-import displacementTexture from "./textures/displacement.jpg";
-import moon from "./textures/moon.jpg";
-import nrm2 from "./textures/nrm2.jpg";
-import textureColor from "./textures/rock2.jpg";
+import ambientTexture from "./textures/ambient.webp";
+import displacementTexture from "./textures/displacement.webp";
+import moon from "./textures/moon.webp";
+import nrm2 from "./textures/nrm2.webp";
+import textureColor from "./textures/rock2.webp";
 import { CharacterControls } from "./utils/controls";
+
+let manager = new THREE.LoadingManager();
+
+// Optional: add handlers for progress
+manager.onProgress = function (url, itemsLoaded, itemsTotal) {
+  const time = performance.now(); // Get the current time
+  console.log(
+    `Loading file: ${url}.\nLoaded ${itemsLoaded} of ${itemsTotal} files. Time: ${time}ms`
+  );
+  // Here you can update your preloader
+};
+
+// Optional: add handlers for when loading completes
+manager.onLoad = function () {
+  const time = performance.now();
+  console.log(`All assets have been loaded. Total time: ${time}ms`);
+  // Here you can hide your preloader
+};
+
+// Optional: add handlers for when loading starts
+manager.onStart = function (url, itemsLoaded, itemsTotal) {
+  const time = performance.now(); // Get the current time
+  console.log(
+    `Started loading file: ${url}.\nLoaded ${itemsLoaded} of ${itemsTotal} files. Time: ${time}ms`
+  );
+  // Here you can display your preloader
+};
+
+// Optional: add handlers for when loading errors occur
+manager.onError = function (url) {
+  console.log("There was an error loading " + url);
+  // Here you can display an error message
+};
 
 // SCENE
 const scene = new THREE.Scene();
@@ -77,7 +109,7 @@ cube.position.x = 5;
 scene.add(cube);
 
 // Load the planet texture
-const planetTexture = new THREE.TextureLoader().load(moon);
+const planetTexture = new THREE.TextureLoader(manager).load(moon);
 
 // Create a sphere geometry
 const planetRadius = 5;
@@ -102,8 +134,8 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
-camera.position.y = 3;
-camera.position.z = 5;
+camera.position.y = 5;
+camera.position.z = 15;
 camera.position.x = 0;
 
 // RENDERER
@@ -189,7 +221,7 @@ generateStars();
 
 //MODEL WITH ANIMATIONS GLB
 var characterControls: CharacterControls;
-new GLTFLoader().load(robotModel, function (gltf) {
+new GLTFLoader(manager).load(robotModel, function (gltf) {
   const model = gltf.scene;
   model.traverse(function (object: any) {
     if (object.isMesh) object.castShadow = true;
@@ -260,7 +292,7 @@ window.addEventListener("resize", onWindowResize);
 
 function generateFloor() {
   // TEXTURES
-  const textureLoader = new THREE.TextureLoader();
+  const textureLoader = new THREE.TextureLoader(manager);
   const sandBaseColor = textureLoader.load(textureColor);
   const sandNormalMap = textureLoader.load(nrm2);
   const sandHeightMap = textureLoader.load(displacementTexture);
@@ -312,7 +344,7 @@ function light() {
 }
 
 function generateStars() {
-  const starGeometry = new THREE.BufferGeometry();
+  const starGeometry = new THREE.BufferGeometry(manager);
   const starMaterial = new THREE.PointsMaterial({
     color: 0xffffff,
     size: 0.7,
