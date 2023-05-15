@@ -119,7 +119,7 @@ export function codedPlate(scene) {
   }
 
   const longText =
-    "Even I had to spend like 10 minutes to find it.. and I did this stuff";
+    "With love, SRC Dev team <3! P.S.Even I had to spend like 10 minutes to find it..and I did this stuff.";
 
   wrapText(
     ctx,
